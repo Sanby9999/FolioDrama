@@ -18,10 +18,10 @@ from googleapiclient.discovery import build
 # ---- 設定區,換成妳自己的值 ----
 SHEET_ID = os.environ.get("SHEET_ID", "1T3uqkGqv922Md92ZAR6B4BUONRNy7QpFdsLBx6hQ6rA")
 SHEET_TAB = os.environ.get("SHEET_TAB", "工作表1")  # 換成妳實際的分頁名稱
-RANGE = f"{SHEET_TAB}!A2:H"  # 第一列是標題,從第二列開始讀,A~H 共 8 欄
+RANGE = f"{SHEET_TAB}!A2:I"  # 第一列是標題,從第二列開始讀,A~I 共 9 欄
 OUTPUT_PATH = "data/dramas.json"
 
-# 對應 Sheet 欄位順序:是否推薦、劇名、類型、男主角、女主角、劇情說明、觀看心得、OST
+# 對應 Sheet 欄位順序:是否推薦、劇名、類型、男主角、女主角、劇情說明、觀看心得、OST、OST連結(YouTube)
 COLUMNS = [
     "recommended",
     "title",
@@ -31,6 +31,7 @@ COLUMNS = [
     "synopsis",
     "review",
     "ost",
+    "ost_url",
 ]
 
 

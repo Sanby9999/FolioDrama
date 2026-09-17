@@ -18,14 +18,42 @@
   {{ end }}
 
   {{ if or $d.male_lead $d.female_lead }}
-  <p class="cast">
-    {{ with $d.male_lead }}男主角：{{ . }}{{ end }}
-    {{ if and $d.male_lead $d.female_lead }} ／ {{ end }}
-    {{ with $d.female_lead }}女主角：{{ . }}{{ end }}
-  </p>
+  <div class="cast">
+    {{ with $d.male_lead }}<p>男主角：{{ . }}</p>{{ end }}
+    {{ with $d.female_lead }}<p>女主角：{{ . }}</p>{{ end }}
+  </div>
   {{ end }}
 
   {{ with $d.synopsis }}<p class="synopsis">{{ . }}</p>{{ end }}
-  {{ with $d.review }}<p class="review">💭 {{ . }}</p>{{ end }}
+  {{ with $d.review }}
+  <details class="review">
+    <summary>💭 觀後心得</summary>
+    <p>{{ . }}</p>
+  </details>
+  {{ end }}
   {{ with $d.ost }}<p class="ost">🎵 OST：{{ . }}</p>{{ end }}
+
+  {{ $videoID := "" }}
+  {{ $startParam := "" }}
+  {{ with $d.ost_url }}
+    {{ if in . "youtu.be/" }}
+      {{ $videoID = index (split (index (split . "youtu.be/") 1) "?") 0 }}
+    {{ else if in . "v=" }}
+      {{ $videoID = index (split (index (split . "v=") 1) "&") 0 }}
+    {{ end }}
+    {{ if in . "&t=" }}
+      {{ $startParam = index (split (index (split . "&t=") 1) "&") 0 }}
+    {{ else if in . "?t=" }}
+      {{ $startParam = index (split (index (split . "?t=") 1) "&") 0 }}
+    {{ else if in . "&start=" }}
+      {{ $startParam = index (split (index (split . "&start=") 1) "&") 0 }}
+    {{ else if in . "?start=" }}
+      {{ $startParam = index (split (index (split . "?start=") 1) "&") 0 }}
+    {{ end }}
+  {{ end }}
+  {{ if $videoID }}
+  <div class="ost-player" data-video-id="{{ $videoID }}"{{ with $startParam }} data-start="{{ . }}"{{ end }}>
+    <button type="button" class="ost-play">▶ 立即聆聽</button>
+  </div>
+  {{ end }}
 </article>
