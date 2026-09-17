@@ -3,6 +3,9 @@
 /resources/
 .hugo_build.lock
 
+# Generated from Google Sheet by fetch_sheet_data.py (regenerated in CI)
+/data/dramas.json
+
 # OS cruft
 .DS_Store
 Thumbs.db
