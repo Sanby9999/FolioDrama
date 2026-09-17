@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ .Site.Title }}</title>
+  <meta name="description" content="{{ .Site.Title }} — 私人劇單與觀劇筆記">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%9E%EF%B8%8F%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
+</head>
+<body>
+
+  <header class="masthead">
+    <p class="eyebrow">Personal Collection · 私人劇單</p>
+    <h1>{{ .Site.Title }}</h1>
+    <p class="subtitle">紀錄每一部值得記下的戲</p>
+  </header>
+
+  {{ $genreSet := slice }}
+  {{ range hugo.Data.dramas }}
+    {{ with .genre }}
+      {{ range split . "," }}
+        {{ $g := trim . " " }}
+        {{ if $g }}{{ $genreSet = $genreSet | append $g }}{{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ $genreSet = $genreSet | uniq | sort }}
+
+  <div class="controls">
+    <input type="search" id="search" placeholder="搜尋劇名、演員、心得…" autocomplete="off">
+    <label class="toggle">
+      <input type="checkbox" id="onlyRecommended">
+      只看推薦 👑
+    </label>
+    <div class="chips" id="genreChips">
+      <button type="button" class="chip active" data-genre="all">全部</button>
+      {{ range $genreSet }}
+      <button type="button" class="chip" data-genre="{{ . }}">{{ . }}</button>
+      {{ end }}
+    </div>
+  </div>
+
+  <main class="grid" id="dramaGrid">
+    {{ $recommended := where hugo.Data.dramas "recommended" true }}
+    {{ $others := where hugo.Data.dramas "recommended" false }}
+    {{ range $recommended }}{{ partial "drama-card.html" . }}{{ end }}
+    {{ range $others }}{{ partial "drama-card.html" . }}{{ end }}
+    <p class="empty" id="emptyState" style="display:none">沒有符合條件的劇 🥲</p>
+  </main>
+
+  <footer>
+    <p>資料來源：Google Sheet · 共 {{ len hugo.Data.dramas }} 部作品</p>
+  </footer>
+
+  <script src="{{ "js/filter.js" | relURL }}"></script>
+</body>
+</html>

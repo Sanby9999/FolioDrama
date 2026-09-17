@@ -1,0 +1,4 @@
+baseURL = 'https://example.org/'
+locale = 'zh-TW'
+title = '追劇筆記'
+disableKinds = ['taxonomy', 'term', 'RSS']

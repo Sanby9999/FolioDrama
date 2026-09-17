@@ -1,0 +1,31 @@
+{{- $d := . -}}
+<article
+  class="card{{ if $d.recommended }} is-recommended{{ end }}"
+  data-recommended="{{ $d.recommended }}"
+  data-genre="{{ $d.genre }}"
+  data-search="{{ lower (printf "%s %s %s %s %s %s" $d.title $d.genre $d.male_lead $d.female_lead $d.synopsis $d.review) }}"
+>
+  {{ if $d.recommended }}<span class="badge">👑 推薦</span>{{ end }}
+  <h2>{{ $d.title }}</h2>
+
+  {{ with $d.genre }}
+  <div class="tags">
+    {{ range split . "," }}
+      {{ $g := trim . " " }}
+      {{ if $g }}<span class="tag">{{ $g }}</span>{{ end }}
+    {{ end }}
+  </div>
+  {{ end }}
+
+  {{ if or $d.male_lead $d.female_lead }}
+  <p class="cast">
+    {{ with $d.male_lead }}男主角：{{ . }}{{ end }}
+    {{ if and $d.male_lead $d.female_lead }} ／ {{ end }}
+    {{ with $d.female_lead }}女主角：{{ . }}{{ end }}
+  </p>
+  {{ end }}
+
+  {{ with $d.synopsis }}<p class="synopsis">{{ . }}</p>{{ end }}
+  {{ with $d.review }}<p class="review">💭 {{ . }}</p>{{ end }}
+  {{ with $d.ost }}<p class="ost">🎵 OST：{{ . }}</p>{{ end }}
+</article>

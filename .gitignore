@@ -1,0 +1,21 @@
+# Hugo build output & cache
+/public/
+/resources/
+.hugo_build.lock
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Python (fetch_sheet_data.py)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Credentials — never commit these
+*.env
+.env
+credentials.json
+application_default_credentials.json
+service-account*.json
